@@ -8,3 +8,5 @@ RUN pip install flask
 RUN pip install pandas
 
 EXPOSE 5000
+
+CMD ["python", "probe.py"]

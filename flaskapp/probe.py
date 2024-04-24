@@ -14,9 +14,9 @@ def last_scan():
     x=random.randrange(0,data.index[-1])
     res={}
     for col in data.columns:
-        res[col]=data[col][x]
-    return {x:res}
+        res[col]=data[str(col)][str(x)]
+    return {x:str}
     
 
 if __name__ == "__main__":
-    app.run(port=5000)
+    app.run(host="0.0.0.0",port=5000)
