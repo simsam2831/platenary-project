@@ -1,18 +1,16 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, count, when, avg
-from pyspark.sql.types import DateType, FloatType, DoubleType, IntegerType
-from pyspark.ml.feature import StringIndexer, Imputer, VectorAssembler, ChiSqSelector
+from pyspark.sql.functions import avg
+from pyspark.sql.types import DateType
+from pyspark.ml.feature import StringIndexer, Imputer, VectorAssembler
 from pyspark.ml import Pipeline
 from pyspark.ml.stat import Correlation
-from pyspark.ml.linalg import Vectors
-from pyspark.ml.classification import RandomForestClassifier, LogisticRegression, DecisionTreeClassifier
-from pyspark.ml.evaluation import BinaryClassificationEvaluator, MulticlassClassificationEvaluator
-import time
+import pandas as pd
 
-def use_planets():
+def use_planets(data):
     #création session spark
     spark = SparkSession.builder.master("local[*]").getOrCreate()
-    df = spark.read.csv('flaskapp/data/hwc.csv', header=True, inferSchema=True)
+    df_inter=pd.DataFrame(data,index=[data.pop("planete_number")])
+    df = spark.createDataFrame(df_inter)
     #drop colonnes inutiles
     compact_data = df.drop('P_GEO_ALBEDO', 'P_DETECTION_MASS', 'P_DETECTION_RADIUS', 'P_ALT_NAMES', 'P_ATMOSPHERE',
                            'S_DISC', 'S_MAGNETIC_FIELD',
