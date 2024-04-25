@@ -1,11 +1,11 @@
-FROM python:3.10-alpine
+FROM python:3.10
 
 WORKDIR /app
 
 COPY /flaskapp . 
 
-RUN pip install flask
-RUN pip install pandas
+RUN pip install -r requirements.txt
+RUN pip install confluent-kafka
 
 EXPOSE 5000
 
