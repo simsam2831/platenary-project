@@ -77,11 +77,22 @@ services:
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
 
+  flask-app:
+    build: 
+      context: .
+      dockerfile: /dockerfile
+    container_name: flask-app
+    restart: always
+    ports:
+      - "5000:5000"
+
   kafka:
     image: wurstmeister/kafka
     container_name: kafka
     ports:
       - "9092:9092"
+    volumes:
+      - ./kafka_scripts:/app/scripts
     environment:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT
@@ -98,7 +109,8 @@ services:
     container_name: zookeeper
     ports:
       - "2181:2181"
-    
+
+
   kafka-ui:
     image: provectuslabs/kafka-ui
     ports:
@@ -108,18 +120,10 @@ services:
     - KAFKA_CLUSTERS_0_NAME=MOAA-Stats
     - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9093
     - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
-    
-  flask-app:
-    build: 
-      context: .
-      dockerfile: /dockerfile
-    container_name: flask-app
-    restart: always
-    ports:
-      - "5000:5000"
 
 
 volumes:
   hadoop_namenode:
   hadoop_datanode:
   hadoop_historyserver:
+  kafka_scripts:
