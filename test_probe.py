@@ -22,7 +22,7 @@ def probe_request():
  
 def prediction_model(input_data):
 
-    model_path = "bestmodel/data"
+    model_path = "bestmodel"
     model = PipelineModel.load(model_path)
     
     preprocessed_data = use_planets(input_data)
@@ -30,6 +30,7 @@ def prediction_model(input_data):
     predictions = model.predict(preprocessed_data)
 
     predictions.show()
+    return predictions
 
 def save_hdfs(data):
     msg=json.dumps(data).encode("utf-8")
@@ -40,7 +41,8 @@ if __name__ == "__main__":
     try:
         x=0
         while x<20:
-            probe_request()
+            res=probe_request()
+            pred=prediction_model(res)
             x+=1
     except Exception:
         print(traceback.format_exc())
