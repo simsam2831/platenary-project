@@ -1,3 +1,14 @@
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, count, when, avg
+from pyspark.sql.types import DateType, FloatType, DoubleType, IntegerType
+from pyspark.ml.feature import StringIndexer, Imputer, VectorAssembler, ChiSqSelector
+from pyspark.ml import Pipeline
+from pyspark.ml.stat import Correlation
+from pyspark.ml.linalg import Vectors
+from pyspark.ml.classification import RandomForestClassifier, LogisticRegression, DecisionTreeClassifier
+from pyspark.ml.evaluation import BinaryClassificationEvaluator, MulticlassClassificationEvaluator
+import time
+
 def use_planets():
     #création session spark
     spark = SparkSession.builder.master("local[*]").getOrCreate()
