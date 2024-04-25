@@ -38,17 +38,11 @@ def consume_message():
     # Consommation des messages Kafka et écriture dans HDFS
     while True:
         msg = consumer.poll(timeout=1.0)
-        if msg is None:
-            continue
-        if msg.error():
-            if msg.error().code() == KafkaError._PARTITION_EOF:
-                continue
-            else:
-                print(msg.error())
-                break
-        hdfs_file_path = hdfs_path + 'data.txt'
-        with hdfs_client.write(hdfs_file_path, overwrite=True) as writer:
-            writer.write(msg.value() + b'\n')
+        if msg:
+            hdfs_file_path = hdfs_path + 'data.txt'
+            with hdfs_client.write(hdfs_file_path, overwrite=True) as writer:
+                writer.write(msg.value() + b'\n')
+
 
 def probe_request():
     container_ip="172.24.0.7"
