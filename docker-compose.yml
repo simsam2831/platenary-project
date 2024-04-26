@@ -85,7 +85,14 @@ services:
     restart: always
     ports:
       - "5000:5000"
-
+  python:
+      build:
+        context: .
+        dockerfile: /dockerfile
+      container_name: python-spark
+      ports:
+        - "8888:8888"
+        
   kafka:
     image: wurstmeister/kafka
     container_name: kafka
@@ -121,13 +128,7 @@ services:
     - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9093
     - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
 
-  python:
-      build:
-        context: .
-        dockerfile: /dockerfile
-      container_name: python-spark
-      ports:
-        - "8888:8888"
+
 
 volumes:
   hadoop_namenode:
